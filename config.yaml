@@ -1,0 +1,32 @@
+project:
+  name: FaceCom
+  save_dir: outputs
+  seed: 42
+
+dataset:
+  root: data
+  image_size: 224
+  num_workers: 4
+  root: data/Task_A
+
+model:
+  backbone: resnet18
+  pretrained: true
+  num_classes_identity: 2
+  multitask: false
+
+train:
+  epochs: 10
+  batch_size: 32
+  lr: 0.0005
+  weight_decay: 0.0001
+
+loss:
+  gender: bce
+
+log:
+  save_every: 2
+
+matcher:
+  val_dir: data/Task_B/val
+  train_dir: data/Task_B/train

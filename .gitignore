@@ -1,0 +1,9 @@
+data/
+__pycache__/
+*.py[cod]
+*.so
+outputs/checkpoints/ 
+
+# OS-specific junk
+.DS_Store
+Thumbs.dbo
