@@ -1,19 +1,25 @@
 # evaluate.py
 
 import torch
+import warnings
 from utils.data_loader import get_loaders
 from utils.helpers import set_seed, compute_metrics
 from models.multitask_model import MultiTaskModel
+import os
 
 def evaluate(config):
+    warnings.filterwarnings("ignore")  # 🔕 Suppress all warnings
+
     set_seed(config['project']['seed'])
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"🔍 Evaluating on device: {device}")
 
-    # Load validation data
+    # Check override from test_path.txt
+    val_path = os.getenv("OVERRIDE_VAL_PATH", None)
+    if val_path:
+        config["dataset"]["root"] = val_path
+
     _, val_loader = get_loaders(config)
 
-    # Load model
     model = MultiTaskModel(
         backbone=config['model']['backbone'],
         pretrained=config['model']['pretrained'],
@@ -24,7 +30,6 @@ def evaluate(config):
     model.load_state_dict(torch.load(model_path, map_location=device))
     model.eval()
 
-    # Evaluate
     all_preds, all_labels = [], []
 
     with torch.no_grad():
@@ -38,9 +43,10 @@ def evaluate(config):
             all_preds.extend(preds.cpu().numpy())
             all_labels.extend(gender.cpu().numpy())
 
-    # Metrics
     metrics = compute_metrics(all_labels, all_preds)
 
-    print("\n--- Gender Classification Metrics ---")
-    for k, v in metrics.items():
-        print(f"{k.capitalize()}: {v:.4f}")
+    # ✅ Print only what frontend needs
+    print(f"Accuracy: {metrics['accuracy']:.4f}")
+    print(f"Precision: {metrics['precision']:.4f}")
+    print(f"Recall: {metrics['recall']:.4f}")
+    print(f"F1-Score: {metrics['f1']:.4f}")

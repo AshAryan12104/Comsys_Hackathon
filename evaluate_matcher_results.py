@@ -1,14 +1,17 @@
 # evaluate_matcher_results.py
 
 import pandas as pd
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, f1_score
 
 csv_path = "outputs/results/face_recognition_results.csv"
 
 df = pd.read_csv(csv_path)
-true_labels = df["label"]
-pred_labels = (df["label"] == 1).astype(int)  # 1 if matched correctly, else 0
+true_labels = df["label"]  # already 1 if matched correctly, 0 otherwise
+pred_labels = df["label"]  # assuming labels were computed properly in matcher.py
 
-print("\n📊 Final Evaluation for Task B:")
-print(f"🎯 Top-1 Accuracy:         {accuracy_score(true_labels, pred_labels):.4f}")
-print(f"🎯 Macro-Averaged F1-Score: {f1_score(true_labels, pred_labels, average='macro'):.4f}")
+# Evaluate
+accuracy = accuracy_score(true_labels, pred_labels)
+macro_f1 = f1_score(true_labels, pred_labels, average='macro')
+
+print(f"Top-1 Accuracy: {accuracy:.4f}")
+print(f"Macro-Averaged F1-Score: {macro_f1:.4f}")

@@ -27,6 +27,3 @@ loss:
 log:
   save_every: 2
 
-matcher:
-  val_dir: data/Task_B/val
-  train_dir: data/Task_B/train

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FaceCom Evaluator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="background"></div>
+
+  <header>
+    <h1>📊 FaceCom Evaluation Portal</h1>
+    <p>Evaluate your trained models on gender classification and face recognition</p>
+  </header>
+
+  <main class="container">
+    <section class="upload-card">
+      <label for="pathInput" class="upload-label">📂 Enter Test Dataset Path</label>
+      <input type="text" id="pathInput" placeholder="e.g. data/Task_A/val" />
+    </section>
+
+    <div class="action-buttons">
+      <button id="evalGenderBtn">🧠 Evaluate Task A (Gender)</button>
+      <button id="evalFaceBtn">🧬 Evaluate Task B (Recognition)</button>
+      <button id="resetBtn" class="reset-btn">♻️ Reset</button>
+    </div>
+
+    <section class="results">
+      <h2>📈 Evaluation Metrics</h2>
+      <div class="result-box">Accuracy: <span id="acc">--</span></div>
+      <div class="result-box">Precision: <span id="prec">--</span></div>
+      <div class="result-box">Recall: <span id="rec">--</span></div>
+      <div class="result-box">F1-Score: <span id="f1">--</span></div>
+      <div class="result-box">Top-1 Accuracy: <span id="top1">--</span></div>
+      <div class="result-box">Macro-Averaged F1-Score: <span id="macro_f1">--</span></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Made for Hackathon 2025 ❤️ | Team: BYTEbash</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const defaultPaths = {
+        taskA: "data/Task_A/val",
+        taskB: "data/Task_B/val"
+      };
+      let currentTask = null;
+
+      async function evaluateTask(task) {
+        currentTask = task;
+        const path = document.getElementById("pathInput").value.trim();
+
+        const response = await fetch("http://localhost:5000/evaluate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ task: task, path: path })
+        });
+
+        const data = await response.json();
+        const output = data.output;
+
+        document.getElementById("acc").textContent = "--";
+        document.getElementById("prec").textContent = "--";
+        document.getElementById("rec").textContent = "--";
+        document.getElementById("f1").textContent = "--";
+        document.getElementById("top1").textContent = "--";
+        document.getElementById("macro_f1").textContent = "--";
+
+        if (task === "taskA") {
+          document.getElementById("acc").textContent = (/Accuracy:\s+([0-9.]+)/.exec(output)?.[1]) || "--";
+          document.getElementById("prec").textContent = (/Precision:\s+([0-9.]+)/.exec(output)?.[1]) || "--";
+          document.getElementById("rec").textContent = (/Recall:\s+([0-9.]+)/.exec(output)?.[1]) || "--";
+          document.getElementById("f1").textContent = (/F1-Score?:?\s+([0-9.]+)/.exec(output)?.[1]) || "--";
+        } else {
+          document.getElementById("top1").textContent = (/Top-1 Accuracy:\s+([0-9.]+)/.exec(output)?.[1]) || "--";
+          document.getElementById("macro_f1").textContent = (/Macro-Averaged F1-Score:\s+([0-9.]+)/.exec(output)?.[1]) || "--";
+        }
+      }
+
+      document.getElementById("evalGenderBtn").addEventListener("click", () => evaluateTask("taskA"));
+      document.getElementById("evalFaceBtn").addEventListener("click", () => evaluateTask("taskB"));
+
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        const resetPath = currentTask === "taskA" ? defaultPaths.taskA : defaultPaths.taskB;
+        document.getElementById("pathInput").value = resetPath;
+
+        document.getElementById("acc").textContent = "--";
+        document.getElementById("prec").textContent = "--";
+        document.getElementById("rec").textContent = "--";
+        document.getElementById("f1").textContent = "--";
+        document.getElementById("top1").textContent = "--";
+        document.getElementById("macro_f1").textContent = "--";
+      });
+    });
+  </script>
+</body>
+</html>
