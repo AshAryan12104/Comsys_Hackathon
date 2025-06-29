@@ -69,8 +69,10 @@ Comsys_Hackathon/
 ## ⚙️ Setup Instructions
 
 ### 1. Clone the Repo
+<pre> ```
 git clone https://github.com/AshAryan12104/Comsys_Hackathon
 cd Comsys_Hackathon
+``` </pre>
 
 ### 2. Install Dependencies
 pip install -r requirements.txt
