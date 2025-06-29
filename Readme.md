@@ -1,172 +1,163 @@
-# 🎯 FaceCom: Robust Face and Gender Recognition in Challenging Environments
 
-This repository contains our solution for the FaceCom Hackathon, where we address two real-world computer vision tasks:
+# 🎯 Robust Face and Gender Recognition in Challenging Environments
 
-- **Task A: Gender Classification**  
-- **Task B: Face Verification / Matching under visual distortions**
+This repository contains our complete solution for the **Comsys Hackathon**, where we address two real-world computer vision tasks using PyTorch, metric learning, and a web-based evaluation frontend.
 
 ---
 
-## 📁 Dataset Structure (After Extraction)
-
-data/
-│
-├── Task_A/
-│   ├── train/
-│   │   ├── male/
-│   │   └── female/
-│   └── val/
-│       ├── male/
-│       └── female/
-│
-├── Task_B/
-│   ├── train/
-│   │   ├── 001_frontal/
-│   │   │   ├── 001_frontal.jpg
-│   │   │   └── distortion/
-│   │   │       ├── 001_frontal_distorted1.jpg
-│   │   │       └── ...
-│   │   └── ...
-│   └── val/
-│       └── same format as train/
-
----
-
-## 🧠 Tasks & Approach
+## 🧠 Tasks Overview
 
 ### 🔹 Task A – Gender Classification
-- Binary classification: `male` or `female`
-- CNN-based backbone (ResNet18)
-- Trained using BCEWithLogitsLoss
-- Evaluated on accuracy, precision, recall, F1
+- **Objective**: Classify face images as **male** or **female**
+- **Model**: ResNet18 backbone + binary classification head
+- **Evaluation**: Accuracy, Precision, Recall, F1-score
 
-### 🔹 Task B – Face Matching / Verification
-- Face embedding model trained with contrastive loss
-- Compares distorted face to identity folders
-- Uses cosine similarity for matching
-- Labels: `1` if matched correctly, else `0`
+### 🔹 Task B – Face Recognition (Matching)
+- **Objective**: Match distorted face images to correct identities
+- **Model**: Triplet-based embedding model using **FaceNet** (InceptionResnetV1)
+- **Evaluation**: Top-1 Accuracy, Macro-averaged F1-score
 
 ---
 
-## 🏗️ Project Structure
+## 📁 Project Structure
 
-FaceCom-Robust-Face-and-Gender-Recognition/
+Comsys_Hackathon/
 │
-├── README.md
-├── requirements.txt
+├── backend.py
 ├── config.yaml
-├── main.py
-├── train.py
-├── evaluate.py
+├── evaluate_task_a.py
+├── evaluate_matcher_results.py
 ├── matcher.py
+├── train.py
 ├── train_matcher.py
-│
-├── models/
-│   ├── multitask_model.py
-│   ├── backbone.py
-│   └── embedding_model.py
+├── evaluate.py
+├── main.py
 │
 ├── utils/
 │   ├── data_loader.py
-│   ├── transforms.py
 │   ├── metrics.py
-│   └── helpers.py
+│   ├── helpers.py
+│   └── triplet_dataset.py
+│
+├── models/
+│   ├── multitask_model.py
+│   └── embedding_model.py
 │
 ├── outputs/
 │   ├── checkpoints/
-│   │   ├── best_model.pt
-│   │   └── matcher_model.pt
+│   │   ├── best_model.pt     # For Task A
+│   │   └── matcher_model.pt  # For Task B
+│   │
 │   └── results/
-│       └── matching_results.csv
+│       └── face_recognition_results.csv
 │
-├── data/
-│   └── Task_A/, Task_B/
+├── index.html
 │
-├── summary/
-│   └── FaceCom_Technical_Summary.pdf
+├── style.css
 │
-└── test_embedding_similarity.py
+│
+├── requirements.txt
+├── test_path.txt
+├── README.md
+└── summary/
+    └── Comsys_Hackathon.pdf
 
 ---
 
 ## ⚙️ Setup Instructions
 
-
-## 🚀 How to Run
 ### 1. Clone the Repo
-```bash
-git clone https://github.com/yourusername/FaceCom-Robust-Face-and-Gender-Recognition.git
-cd FaceCom-Robust-Face-and-Gender-Recognition
-```
+git clone https://github.com/AshAryan12104/Comsys_Hackathon
+cd Comsys_Hackathon
 
 ### 2. Install Dependencies
-```bash
 pip install -r requirements.txt
-```
 
-### 3. Prepare Dataset
-Extract and place the dataset inside the data/ folder.
-Maintain the provided structure for Task_A and Task_B.
+### 3. Train Models
 
-🚀 How to Run
-🔹 Task A: Gender Classification
-    Train:
-```bash
+#### 🔹 Task A (Gender Classification)
 python main.py --mode train --config config.yaml
-```
 
-    Evaluate Model
-```bash
-python main.py --mode evaluate --config config.yaml
-```
-
-🔹 Task B: Face Matching / Verification
-    Train Embedding Model:
-```bash
+#### 🔹 Task B (Face Matching)
 python train_matcher.py
-```
-    Generate Matching Predictions:
-```bash
+
+---
+
+## 🔐 Download Pretrained Weights
+
+To run evaluation without retraining, download the pretrained model checkpoints from the link below:
+
+📦 [Download Weights from Google Drive](https://drive.google.com/drive/folders/1IjbLg77rXdhvyadaN2vDwgEpFyu935v2?usp=sharing)
+
+### Files Included:
+
+- `best_model.pt` → Used for Task A (Gender Classification)
+- `matcher_model.pt` → Used for Task B (Face Matching)
+
+### 📂 Where to Place the Files:
+
+After downloading, place them in the following location inside the project: (This is very important)
+├── outputs/
+│   ├── checkpoints/
+│   │   ├── best_model.pt     # For Task A
+│   │   └── matcher_model.pt  # For Task B
+
+> ⚠️ Make sure the folder structure matches exactly, or the evaluation scripts may not find the model files.
+
+---
+
+## ✅ Evaluation
+
+### 🔹 Task A (Gender)
+python evaluate_task_a.py
+
+### 🔹 Task B (Face Recognition)
 python matcher.py
-```
-    (Optional) Test Specific Similarities:
-```bash
-python test_embedding_similarity.py
-```
+python evaluate_matcher_results.py
 
 ---
 
-## 📊 Evaluation Metrics
-### Task A - Gender Classification:
-- Accuracy
-- Precision
-- Recall
-- F1-Score
+## 🌐 Frontend: Web Evaluation Portal 
 
-### Task B - Face Recognition:
-- Cosine Similarity
-- Binary Labels:
-- 1: Match
-- 0: No Match
-- Output saved in: outputs/results/matching_results.csv
+1. Run the backend:
+python backend.py
+
+2. Open your browser and visit:
+http://localhost:5000
+
+3. Enter validation folder path (e.g. data/Task_A/val)
+
+4. Click **Evaluate Task A** or **Evaluate Task B**
+
+5. Wait for few sec to a min for processing...
+
+5. View metrics on screen !!!
 
 ---
 
-## 📌 Summary Highlights
-- Multitask learning enables better feature generalization.
-- Strong robustness under blur, glare, fog, and low light.
-- Trained & evaluated using PyTorch with GPU support.
-- Modular code and easy-to-use config file.
-- Uses pretrained ResNet for transfer learning.
+## 📊 Sample Metrics
+
+### ✅ Task A
+- Accuracy: 94.79%
+- Precision: 97.43%
+- Recall: 95.58%
+- F1-Score: 96.50%
+
+### ✅ Task B
+- Top-1 Accuracy: 100.00%
+- Macro-Averaged F1-Score: 100.00%
 
 ---
 
 ## 📄 License
-This repository is released for academic and hackathon use only.
+
+This project is developed as part of a Hackathon and is intended for academic and demonstration use only.
 
 ---
 
-## 🤝 Team
-- **Name:** Md Aryan Rehman
-- **Role:** Developer / Researcher
-- **Contact:** [aryanrehman12104@gmail.com ]
+## 👥 Team BYTEBash
+
+- **Name:** Md Aryan Rehman, Raiyan Aftab Ansari, Priyanshu Mishra.
+- **GitHub:** https://github.com/AshAryan12104
+- **Email:** bytebash.gcetts.entropy@gmail.com 
+---
