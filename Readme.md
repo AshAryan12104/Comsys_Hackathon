@@ -24,6 +24,11 @@ This repository contains our complete solution for the **Comsys Hackathon**, whe
 <pre> ```
 Comsys_Hackathon/
 │
+├── data/
+│   ├── Task_A/...
+│   └── Task_B/...
+│
+│
 ├── backend.py
 ├── config.yaml
 ├── evaluate_task_a.py
@@ -87,11 +92,11 @@ python train_matcher.py
 
 ---
 
-## 🔐 Download Pretrained Weights
+## 🔐 Download Pretrained Model Weights
 
 To run evaluation without retraining, download the pretrained model checkpoints from the link below:
 
-📦 [Download Weights from Google Drive](https://drive.google.com/drive/folders/1IjbLg77rXdhvyadaN2vDwgEpFyu935v2?usp=sharing)
+📦 [Download Model Weights from Google Drive](https://drive.google.com/drive/folders/1IjbLg77rXdhvyadaN2vDwgEpFyu935v2?usp=sharing)
 
 ### Files Included:
 
