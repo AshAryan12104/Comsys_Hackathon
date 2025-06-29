@@ -133,7 +133,7 @@ http://localhost:5000
 
 4. Click **Evaluate Task A** or **Evaluate Task B**
 
-5. Wait for few sec to a min for processing...
+5. Wait for few sec to a min for processing...(At 1st try the localhost might restart or do some glitching, In that case repeat 4. Click **Evaluate Task A** or **Evaluate Task B** once again it will work )
 
 5. View metrics on screen !!!
 
