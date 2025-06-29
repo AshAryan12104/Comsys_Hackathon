@@ -21,6 +21,7 @@ This repository contains our complete solution for the **Comsys Hackathon**, whe
 
 ## 📁 Project Structure
 
+<pre> ```
 Comsys_Hackathon/
 │
 ├── backend.py
@@ -61,6 +62,7 @@ Comsys_Hackathon/
 ├── README.md
 └── summary/
     └── Comsys_Hackathon.pdf
+``` </pre>
 
 ---
 
@@ -97,10 +99,12 @@ To run evaluation without retraining, download the pretrained model checkpoints 
 ### 📂 Where to Place the Files:
 
 After downloading, place them in the following location inside the project: (This is very important)
+<pre> ```
 ├── outputs/
 │   ├── checkpoints/
 │   │   ├── best_model.pt     # For Task A
 │   │   └── matcher_model.pt  # For Task B
+``` </pre>
 
 > ⚠️ Make sure the folder structure matches exactly, or the evaluation scripts may not find the model files.
 
