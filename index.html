@@ -70,13 +70,13 @@
         document.getElementById("macro_f1").textContent = "--";
 
         if (task === "taskA") {
-          document.getElementById("acc").textContent = (/Accuracy:\s+([0-9.]+)/.exec(output)?.[1]) || "--";
-          document.getElementById("prec").textContent = (/Precision:\s+([0-9.]+)/.exec(output)?.[1]) || "--";
-          document.getElementById("rec").textContent = (/Recall:\s+([0-9.]+)/.exec(output)?.[1]) || "--";
-          document.getElementById("f1").textContent = (/F1-Score?:?\s+([0-9.]+)/.exec(output)?.[1]) || "--";
+          document.getElementById("acc").textContent = (/Accuracy:\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
+          document.getElementById("prec").textContent = (/Precision:\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
+          document.getElementById("rec").textContent = (/Recall:\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
+          document.getElementById("f1").textContent = (/F1-Score?:?\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
         } else {
-          document.getElementById("top1").textContent = (/Top-1 Accuracy:\s+([0-9.]+)/.exec(output)?.[1]) || "--";
-          document.getElementById("macro_f1").textContent = (/Macro-Averaged F1-Score:\s+([0-9.]+)/.exec(output)?.[1]) || "--";
+          document.getElementById("top1").textContent = (/Top-1 Accuracy:\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
+          document.getElementById("macro_f1").textContent = (/Macro-Averaged F1-Score:\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
         }
       }
 
