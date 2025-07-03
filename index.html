@@ -15,25 +15,47 @@
   </header>
 
   <main class="container">
+    <!-- Dataset Path Input -->
     <section class="upload-card">
       <label for="pathInput" class="upload-label">📂 Enter Test Dataset Path</label>
       <input type="text" id="pathInput" placeholder="e.g. data/Task_A/val" />
     </section>
 
+    <!-- Action Buttons -->
     <div class="action-buttons">
       <button id="evalGenderBtn">🧠 Evaluate Task A (Gender)</button>
       <button id="evalFaceBtn">🧬 Evaluate Task B (Recognition)</button>
       <button id="resetBtn" class="reset-btn">♻️ Reset</button>
     </div>
 
+    <!-- Spinner -->
+    <div id="loadingSpinner" class="hidden">⏳ Please wait... evaluating</div>
+
+    <!-- Matcher Progress -->
+    <div class="progress-container hidden" id="progressContainer">
+      <div class="progress-label">Running matcher.py...</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%">0%</div>
+      </div>
+    </div>
+
+    <!-- Results -->
     <section class="results">
       <h2>📈 Evaluation Metrics</h2>
-      <div class="result-box">Accuracy: <span id="acc">--</span></div>
-      <div class="result-box">Precision: <span id="prec">--</span></div>
-      <div class="result-box">Recall: <span id="rec">--</span></div>
-      <div class="result-box">F1-Score: <span id="f1">--</span></div>
-      <div class="result-box">Top-1 Accuracy: <span id="top1">--</span></div>
-      <div class="result-box">Macro-Averaged F1-Score: <span id="macro_f1">--</span></div>
+
+      <!-- Task A -->
+      <div id="taskAResults">
+        <div class="result-box">Accuracy: <span id="acc">--</span></div>
+        <div class="result-box">Precision: <span id="prec">--</span></div>
+        <div class="result-box">Recall: <span id="rec">--</span></div>
+        <div class="result-box">F1-Score: <span id="f1">--</span></div>
+      </div>
+
+      <!-- Task B -->
+      <div id="taskBResults">
+        <div class="result-box">Top-1 Accuracy: <span id="top1">--</span></div>
+        <div class="result-box">Macro-Averaged F1-Score: <span id="macro_f1">--</span></div>
+      </div>
     </section>
   </main>
 
@@ -41,60 +63,111 @@
     <p>Made for Hackathon 2025 ❤️ | Team: BYTEbash</p>
   </footer>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const defaultPaths = {
-        taskA: "data/Task_A/val",
-        taskB: "data/Task_B/val"
-      };
-      let currentTask = null;
 
-      async function evaluateTask(task) {
-        currentTask = task;
-        const path = document.getElementById("pathInput").value.trim();
+<div id="errorMsg" class="error-message hidden"></div>
 
-        const response = await fetch("http://localhost:5000/evaluate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ task: task, path: path })
-        });
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const defaultPaths = {
+      taskA: "data/Task_A/val",
+      taskB: "data/Task_B/val"
+    };
+    let currentTask = null;
+    let progressInterval = null;
 
-        const data = await response.json();
-        const output = data.output;
+    document.getElementById("taskAResults").style.display = "none";
+    document.getElementById("taskBResults").style.display = "none";
 
-        document.getElementById("acc").textContent = "--";
-        document.getElementById("prec").textContent = "--";
-        document.getElementById("rec").textContent = "--";
-        document.getElementById("f1").textContent = "--";
-        document.getElementById("top1").textContent = "--";
-        document.getElementById("macro_f1").textContent = "--";
+    async function evaluateTask(task) {
+      currentTask = task;
+      const path = document.getElementById("pathInput").value.trim() || defaultPaths[task];
 
-        if (task === "taskA") {
-          document.getElementById("acc").textContent = (/Accuracy:\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
-          document.getElementById("prec").textContent = (/Precision:\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
-          document.getElementById("rec").textContent = (/Recall:\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
-          document.getElementById("f1").textContent = (/F1-Score?:?\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
-        } else {
-          document.getElementById("top1").textContent = (/Top-1 Accuracy:\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
-          document.getElementById("macro_f1").textContent = (/Macro-Averaged F1-Score:\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
-        }
+      // Reset UI
+      document.getElementById("taskAResults").style.display = "none";
+      document.getElementById("taskBResults").style.display = "none";
+      document.getElementById("acc").textContent = "--";
+      document.getElementById("prec").textContent = "--";
+      document.getElementById("rec").textContent = "--";
+      document.getElementById("f1").textContent = "--";
+      document.getElementById("top1").textContent = "--";
+      document.getElementById("macro_f1").textContent = "--";
+      document.getElementById("loadingSpinner").classList.remove("hidden");
+      document.getElementById("progressContainer").classList.add("hidden");
+      document.getElementById("progressFill").style.width = "0%";
+      document.getElementById("errorMsg").classList.add("hidden");
+
+      // Start polling if Task B
+      if (task === "taskB") {
+        document.getElementById("progressContainer").classList.remove("hidden");
+        progressInterval = setInterval(async () => {
+          const progRes = await fetch("http://localhost:5000/progress");
+          const progData = await progRes.json();
+          const pct = parseInt(progData.progress || 0);
+          document.getElementById("progressFill").style.width = pct + "%";
+          document.getElementById("progressFill").textContent = pct + "%";
+          if (pct >= 100) clearInterval(progressInterval);
+        }, 400);
       }
 
-      document.getElementById("evalGenderBtn").addEventListener("click", () => evaluateTask("taskA"));
-      document.getElementById("evalFaceBtn").addEventListener("click", () => evaluateTask("taskB"));
+      try {
+        const res = await fetch("http://localhost:5000/evaluate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ task, path })
+        });
 
-      document.getElementById("resetBtn").addEventListener("click", () => {
-        const resetPath = currentTask === "taskA" ? defaultPaths.taskA : defaultPaths.taskB;
-        document.getElementById("pathInput").value = resetPath;
+        const data = await res.json();
+        const output = data.output;
 
-        document.getElementById("acc").textContent = "--";
-        document.getElementById("prec").textContent = "--";
-        document.getElementById("rec").textContent = "--";
-        document.getElementById("f1").textContent = "--";
-        document.getElementById("top1").textContent = "--";
-        document.getElementById("macro_f1").textContent = "--";
-      });
+        if (!output || /error|not found|invalid/i.test(output)) {
+          throw new Error("❌ Evaluation failed. Please check your path or data structure.");
+        }
+
+        updateMetrics(task, output);
+      } catch (err) {
+        document.getElementById("errorMsg").textContent = err.message;
+        document.getElementById("errorMsg").classList.remove("hidden");
+      }
+
+      document.getElementById("loadingSpinner").classList.add("hidden");
+    }
+
+    function updateMetrics(task, output) {
+      document.getElementById("taskAResults").style.display = "none";
+      document.getElementById("taskBResults").style.display = "none";
+
+      if (task === "taskA") {
+        document.getElementById("taskAResults").style.display = "block";
+        document.getElementById("acc").textContent = (/Accuracy:\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
+        document.getElementById("prec").textContent = (/Precision:\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
+        document.getElementById("rec").textContent = (/Recall:\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
+        document.getElementById("f1").textContent = (/F1-Score?:?\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
+      } else {
+        document.getElementById("taskBResults").style.display = "block";
+        document.getElementById("top1").textContent = (/Top-1 Accuracy\s*:\s*([0-9.]+)/.exec(output)?.[1] + " %") || "--";
+        document.getElementById("macro_f1").textContent = (/Macro-Averaged F1-Score\s*:\s*([0-9.]+)/.exec(output)?.[1] + " %") || "--";
+      }
+    }
+
+    document.getElementById("evalGenderBtn").addEventListener("click", () => evaluateTask("taskA"));
+    document.getElementById("evalFaceBtn").addEventListener("click", () => evaluateTask("taskB"));
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      const path = currentTask ? defaultPaths[currentTask] : "";
+      document.getElementById("pathInput").value = path;
+      document.getElementById("taskAResults").style.display = "none";
+      document.getElementById("taskBResults").style.display = "none";
+      document.getElementById("acc").textContent = "--";
+      document.getElementById("prec").textContent = "--";
+      document.getElementById("rec").textContent = "--";
+      document.getElementById("f1").textContent = "--";
+      document.getElementById("top1").textContent = "--";
+      document.getElementById("macro_f1").textContent = "--";
+      document.getElementById("progressFill").style.width = "0%";
+      document.getElementById("progressContainer").classList.add("hidden");
+      document.getElementById("errorMsg").classList.add("hidden");
     });
-  </script>
+  });
+</script>
 </body>
 </html>

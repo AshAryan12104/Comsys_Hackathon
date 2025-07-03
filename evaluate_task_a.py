@@ -1,24 +1,42 @@
 # evaluate_task_a.py
-from evaluate import evaluate
 import os
+import sys
+import argparse
+from evaluate import evaluate
 
 if __name__ == "__main__":
-    test_path_file = "test_path.txt"
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--val_dir', type=str, default='data/Task_A/val', help="Path to validation data")
+    args = parser.parse_args()
 
-    if os.path.exists(test_path_file):
-        with open(test_path_file, "r") as f:
-            path = f.read().strip()
-            print("[DEBUG] Running evaluation with path:", path)
-            os.environ["OVERRIDE_VAL_PATH"] = path  # Pass val path via env
-    else:
-        print("[DEBUG] test_path.txt not found. Using default val path.")
+# Validate path
+if not os.path.exists(args.val_dir):
+    print(f"[ERROR] Provided path '{args.val_dir}' does not exist.")
+    sys.exit(1)
 
+# Validate structure: expecting 2 folders (male/female)
+subdirs = [d for d in os.listdir(args.val_dir) if os.path.isdir(os.path.join(args.val_dir, d))]
+if len(subdirs) != 2:
+    print(f"[ERROR] Validation folder must contain exactly 2 class folders (e.g., male/female). Found: {subdirs}")
+    sys.exit(1)
+
+# Check at least one image per folder
+for sub in subdirs:
+    sub_path = os.path.join(args.val_dir, sub)
+    imgs = [f for f in os.listdir(sub_path) if f.endswith(('.jpg', '.png'))]
+    if not imgs:
+        print(f"[ERROR] Folder '{sub}' has no valid images.")
+        sys.exit(1)
+
+
+    # Pass the path as part of config
     evaluate({
         'project': {
             'seed': 42
         },
         'dataset': {
-            'root': 'data/Task_A',
+            'root': 'data/Task_A',        # Root for training (if needed)
+            'val_path': args.val_dir,     # 👈 This is used for validation
             'image_size': 224,
             'num_workers': 2
         },

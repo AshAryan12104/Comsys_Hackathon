@@ -8,7 +8,7 @@ from models.multitask_model import MultiTaskModel
 import os
 
 def evaluate(config):
-    warnings.filterwarnings("ignore")  # 🔕 Suppress all warnings
+    warnings.filterwarnings("ignore")  #  Suppress all warnings
 
     set_seed(config['project']['seed'])
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

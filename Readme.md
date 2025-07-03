@@ -55,7 +55,8 @@ Comsys_Hackathon/
 │   │   └── matcher_model.pt  # For Task B
 │   │
 │   └── results/
-│       └── face_recognition_results.csv
+│       ├── face_recognition_results.csv
+│       └── matcher_progress.txt
 │
 ├── index.html
 │
@@ -120,10 +121,10 @@ After downloading, place them in the following location inside the project: (Thi
 ## ✅ Evaluation
 
 ### 🔹 Task A (Gender)
-python evaluate_task_a.py
+python evaluate_task_a.py --val_dir <your_val_folder>
 
 ### 🔹 Task B (Face Recognition)
-python matcher.py
+python matcher.py --test_dir <your_val_folder>
 python evaluate_matcher_results.py
 
 ---
@@ -140,9 +141,13 @@ http://localhost:5000
 
 4. Click **Evaluate Task A** or **Evaluate Task B**
 
-5. Wait for few sec to a min for processing...(At 1st try the localhost might restart or do some glitching, In that case repeat 4. Click **Evaluate Task A** or **Evaluate Task B** once again it will work )
+5. A progress bar appears for Task B and shows % as matcher.py runs in real-time.
 
-5. View metrics on screen !!!
+6. On invalid path or wrong structure, error message is now shown on the webpage.
+
+7. View metrics on screen after evaluation of respective Task !!!
+
+> ⏳ If the server restarts or glitches on first try, just click the button again after refresh.
 
 ---
 
