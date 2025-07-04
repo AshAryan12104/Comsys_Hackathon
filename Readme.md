@@ -115,8 +115,9 @@ cd Comsys_Hackathon
 ``` </pre>
 
 ### 2. Install Dependencies
-
+<pre>
 pip install -r requirements.txt
+</pre>
 
 ### 3. Train Models
 
