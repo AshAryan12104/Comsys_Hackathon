@@ -122,12 +122,14 @@ pip install -r requirements.txt
 ### 3. Train Models
 
 #### 🔹 Task A (Gender Classification)
-
+<pre>
 python main.py --mode train --config config.yaml
+</pre>
 
 #### 🔹 Task B (Face Matching)
-
+<pre>
 python train_matcher.py
+</pre>
 
 ---
 
@@ -159,23 +161,29 @@ After downloading, place them in the following location inside the project: (Thi
 ## ✅ Evaluation
 
 ### 🔹 Task A (Gender)
-
+<pre>
 python evaluate_task_a.py --val_dir <your_val_folder>
+</pre>
 
 ### 🔹 Task B (Face Recognition)
-
+<pre>
 python matcher.py --test_dir <your_val_folder>
-
+</pre>
+After complete running matcher.py, Run
+<pre>
 python evaluate_matcher_results.py
+</pre>
 
 ---
 
 ## 🌐 Frontend: Web Evaluation Portal 
 
 1. Run the backend:
+<pre>
 python backend.py
+</pre>
 
-2. Open your browser and visit:
+2. Open your browser and visit :
 http://localhost:5000
 
 3. Enter validation folder path (e.g. data/Task_A/val)
@@ -216,5 +224,5 @@ This project is developed as part of a Hackathon and is intended for academic an
 
 - **Name:** Md Aryan Rehman, Raiyan Aftab Ansari, Priyanshu Mishra.
 - **GitHub:** https://github.com/AshAryan12104
-- **Email:** bytebash.gcetts.entropy@gmail.com 
+- **Email:** aryanrehman12104@gmail.com
 ---
