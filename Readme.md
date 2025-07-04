@@ -162,14 +162,27 @@ After downloading, place them in the following location inside the project: (Thi
 
 ### 🔹 Task A (Gender)
 <pre>
-python evaluate_task_a.py --val_dir <your_val_folder>
+python evaluate_task_a.py --val_dir path/to/your/val/folder 
+</pre>
+
+**Example : **
+<pre>
+python evaluate_task_a.py --val_dir data/Task_A/val 
 </pre>
 
 ### 🔹 Task B (Face Recognition)
 <pre>
-python matcher.py --test_dir <your_val_folder>
+python matcher.py --test_dir path/to/your/val/folder
 </pre>
 After complete running matcher.py, Run
+<pre>
+python evaluate_matcher_results.py
+</pre>
+
+**Example : **
+<pre>
+python matcher.py --test_dir data/Task_B/val
+</pre>
 <pre>
 python evaluate_matcher_results.py
 </pre>

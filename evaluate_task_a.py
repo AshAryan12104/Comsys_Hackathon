@@ -29,27 +29,27 @@ for sub in subdirs:
         sys.exit(1)
 
 
-    # Pass the path as part of config
-    evaluate({
-        'project': {
-            'seed': 42
-        },
-        'dataset': {
-            'root': 'data/Task_A',        # Root for training (if needed)
-            'val_path': args.val_dir,     # 👈 This is used for validation
-            'image_size': 224,
-            'num_workers': 2
-        },
-        'model': {
-            'backbone': 'resnet18',
-            'pretrained': True,
-            'num_classes_identity': 2,
-            'multitask': False
-        },
-        'train': {
-            'epochs': 10,
-            'batch_size': 32,
-            'lr': 0.0005,
-            'weight_decay': 0.0001
-        }
-    })
+# Pass the path as part of config
+evaluate({
+    'project': {
+        'seed': 42
+    },
+    'dataset': {
+        'root': 'data/Task_A',        # Root for training (if needed)
+        'val_path': args.val_dir,     # 👈 This is used for validation
+        'image_size': 224,
+        'num_workers': 2
+    },
+    'model': {
+        'backbone': 'resnet18',
+        'pretrained': True,
+        'num_classes_identity': 2,
+        'multitask': False
+    },
+    'train': {
+        'epochs': 10,
+        'batch_size': 32,
+        'lr': 0.0005,
+        'weight_decay': 0.0001
+    }
+})
