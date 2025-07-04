@@ -66,6 +66,7 @@ Comsys_Hackathon/
 ├── requirements.txt
 ├── test_path.txt
 ├── README.md
+├── training_result.md
 └── summary/
     └── Comsys_Hackathon.pdf
 ``` </pre>
@@ -224,6 +225,8 @@ http://localhost:5000
 ### ✅ Task B
 - Top-1 Accuracy: 100.00%
 - Macro-Averaged F1-Score: 100.00%
+
+> Training And Validation Results are on training_result.md
 
 ---
 
