@@ -77,7 +77,7 @@ if __name__ == "__main__":
     import logging
     from werkzeug.serving import WSGIRequestHandler
 
-    # Suppress per-request logs only (like GET /progress ...)
+    # Suppress per-request logs only 
     class NoRequestLogHandler(WSGIRequestHandler):
         def log_request(self, code='-', size='-'):
             pass  # Disable logging for each HTTP request

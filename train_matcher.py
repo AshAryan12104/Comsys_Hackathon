@@ -65,7 +65,7 @@ def train():
 
     os.makedirs(os.path.dirname(checkpoint_path), exist_ok=True)
     torch.save(model.state_dict(), checkpoint_path)
-    print(f"✅ Model saved to {checkpoint_path}")
+    print(f" Model saved to {checkpoint_path}")
 
 if __name__ == "__main__":
     train()

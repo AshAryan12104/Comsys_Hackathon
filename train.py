@@ -13,7 +13,7 @@ def train(config):
 
     train_loader, val_loader = get_loaders(config)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"🚀 Using device: {device}")
+    print(f" Using device: {device}")
 
     model = MultiTaskModel(
         backbone=config['model']['backbone'],
@@ -46,7 +46,7 @@ def train(config):
             running_loss += loss.item()
 
         avg_loss = running_loss / len(train_loader)
-        print(f"📉 Epoch {epoch} | Avg Loss: {avg_loss:.4f}")
+        print(f" Epoch {epoch} | Avg Loss: {avg_loss:.4f}")
 
         # ---------------- Evaluation ----------------
         model.eval()
@@ -63,13 +63,13 @@ def train(config):
                 all_labels.extend(labels.cpu().numpy())
 
         metrics = compute_metrics(all_labels, all_preds)
-        print(f"✅ Val F1: {metrics['f1']:.4f} | Acc: {metrics['accuracy']:.4f}")
+        print(f" Val F1: {metrics['f1']:.4f} | Acc: {metrics['accuracy']:.4f}")
 
         # Save best model
         if metrics["f1"] > best_f1:
             best_f1 = metrics["f1"]
             os.makedirs("outputs/checkpoints", exist_ok=True)
             torch.save(model.state_dict(), "outputs/checkpoints/best_model.pt")
-            print(f"💾 Saved best model (F1: {best_f1:.4f})")
+            print(f" Saved best model (F1: {best_f1:.4f})")
 
-    print("🏁 Training complete.")
+    print(" Training complete.")
