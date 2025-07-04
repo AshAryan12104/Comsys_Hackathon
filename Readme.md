@@ -165,7 +165,7 @@ After downloading, place them in the following location inside the project: (Thi
 python evaluate_task_a.py --val_dir path/to/your/val/folder 
 </pre>
 
-**Example : **
+**Example :**
 <pre>
 python evaluate_task_a.py --val_dir data/Task_A/val 
 </pre>
@@ -179,7 +179,7 @@ After complete running matcher.py, Run
 python evaluate_matcher_results.py
 </pre>
 
-**Example : **
+**Example :**
 <pre>
 python matcher.py --test_dir data/Task_B/val
 </pre>
