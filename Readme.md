@@ -72,6 +72,39 @@ Comsys_Hackathon/
 
 ---
 
+## 🧠 Architecture
+
+### Task A – Gender Classification
+•	Backbone: ResNet18 (pretrained on ImageNet)
+•	Final FC layer replaced with a 1-node Sigmoid output head
+•	Only gender head used (no multitask mode)
+        Input (224x224x3)
+        ↓
+        ResNet18 Backbone
+        ↓
+        Fully Connected Layer (1)
+        ↓
+        Sigmoid → Binary Gender Output
+
+### Task B – Face Recognition (Matching)
+•	Backbone: FaceNet (InceptionResNetV1) from facenet-pytorch
+•	Embedding size: 512-D vector
+•	Matching Logic:
+        o	Reference embedding per identity from 1 clean image
+        o	Compare distorted test images using cosine similarity
+        o	Apply identity threshold (0.65) to validate match
+
+        Test Image   → EmbeddingModel (FaceNet) → 512D Embedding
+        Reference    → EmbeddingModel (FaceNet) → 512D Embedding
+                        ↓
+                Cosine Similarity
+                        ↓
+                Best Match + Threshold
+                        ↓
+                Match (Label = 1 or 0)
+
+---
+
 ## ⚙️ Setup Instructions
 
 ### 1. Clone the Repo
