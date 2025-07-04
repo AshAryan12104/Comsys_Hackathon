@@ -115,14 +115,17 @@ cd Comsys_Hackathon
 ``` </pre>
 
 ### 2. Install Dependencies
+
 pip install -r requirements.txt
 
 ### 3. Train Models
 
 #### 🔹 Task A (Gender Classification)
+
 python main.py --mode train --config config.yaml
 
 #### 🔹 Task B (Face Matching)
+
 python train_matcher.py
 
 ---
@@ -155,10 +158,13 @@ After downloading, place them in the following location inside the project: (Thi
 ## ✅ Evaluation
 
 ### 🔹 Task A (Gender)
+
 python evaluate_task_a.py --val_dir <your_val_folder>
 
 ### 🔹 Task B (Face Recognition)
+
 python matcher.py --test_dir <your_val_folder>
+
 python evaluate_matcher_results.py
 
 ---
