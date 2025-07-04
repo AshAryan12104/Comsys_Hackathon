@@ -78,13 +78,14 @@ Comsys_Hackathon/
 •	Backbone: ResNet18 (pretrained on ImageNet)
 •	Final FC layer replaced with a 1-node Sigmoid output head
 •	Only gender head used (no multitask mode)
+
         Input (224x224x3)
-        ↓
+                ↓
         ResNet18 Backbone
-        ↓
+                ↓
         Fully Connected Layer (1)
-        ↓
-        Sigmoid → Binary Gender Output
+                ↓
+            Sigmoid → Binary Gender Output
 
 ### Task B – Face Recognition (Matching)
 •	Backbone: FaceNet (InceptionResNetV1) from facenet-pytorch
