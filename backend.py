@@ -51,12 +51,14 @@ def evaluate():
 
 
     elif task == "taskB":
+        with open("outputs/results/matcher_progress.txt", "w") as f:
+            f.write("0")
         try:
             matcher_process = subprocess.run(
                 ["python", "matcher.py", "--test_dir", path],
                 capture_output=True,
                 text=True,
-                check=True  # ← This line ensures exception is raised if matcher fails
+                check=True  
             )
             print("[DEBUG] Matcher Output:\n", matcher_process.stdout)
 

@@ -46,7 +46,7 @@ def evaluate(config):
     metrics = compute_metrics(all_labels, all_preds)
 
     #  Print only what frontend needs
-    print(f"Accuracy: {metrics['accuracy']*100:.4f} %")
-    print(f"Precision: {metrics['precision']*100:.4f} %")
-    print(f"Recall: {metrics['recall']*100:.4f} %")
-    print(f"F1-Score: {metrics['f1']*100:.4f} %")
+    print(f"Accuracy    : {metrics['accuracy']*100:.4f} %")
+    print(f"Precision   : {metrics['precision']*100:.4f} %")
+    print(f"Recall      : {metrics['recall']*100:.4f} %")
+    print(f"F1-Score    : {metrics['f1']*100:.4f} %")

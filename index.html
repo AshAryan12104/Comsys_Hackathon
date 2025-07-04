@@ -54,6 +54,9 @@
       <!-- Task B -->
       <div id="taskBResults">
         <div class="result-box">Top-1 Accuracy: <span id="top1">--</span></div>
+        <div class="result-box">Precision: <span id="b_prec">--</span></div>
+        <div class="result-box">Recall: <span id="b_rec">--</span></div>
+        <div class="result-box">F1-Score: <span id="b_f1">--</span></div>
         <div class="result-box">Macro-Averaged F1-Score: <span id="macro_f1">--</span></div>
       </div>
     </section>
@@ -90,6 +93,9 @@
       document.getElementById("rec").textContent = "--";
       document.getElementById("f1").textContent = "--";
       document.getElementById("top1").textContent = "--";
+      document.getElementById("b_prec").textContent = "--";
+      document.getElementById("b_rec").textContent = "--";
+      document.getElementById("b_f1").textContent = "--";
       document.getElementById("macro_f1").textContent = "--";
       document.getElementById("loadingSpinner").classList.remove("hidden");
       document.getElementById("progressContainer").classList.add("hidden");
@@ -138,13 +144,16 @@
 
       if (task === "taskA") {
         document.getElementById("taskAResults").style.display = "block";
-        document.getElementById("acc").textContent = (/Accuracy:\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
-        document.getElementById("prec").textContent = (/Precision:\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
-        document.getElementById("rec").textContent = (/Recall:\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
-        document.getElementById("f1").textContent = (/F1-Score?:?\s+([0-9.]+)/.exec(output)?.[1] + " %") || "--";
+        document.getElementById("acc").textContent = (/Accuracy\s*:\s*([0-9.]+)/.exec(output)?.[1] + " %") || "--";
+        document.getElementById("prec").textContent = (/Precision\s*:\s*([0-9.]+)/.exec(output)?.[1] + " %") || "--";
+        document.getElementById("rec").textContent = (/Recall\s*:\s*([0-9.]+)/.exec(output)?.[1] + " %") || "--";
+        document.getElementById("f1").textContent = (/F1-Score\s*:\s*([0-9.]+)/.exec(output)?.[1] + " %") || "--";
       } else {
         document.getElementById("taskBResults").style.display = "block";
         document.getElementById("top1").textContent = (/Top-1 Accuracy\s*:\s*([0-9.]+)/.exec(output)?.[1] + " %") || "--";
+        document.getElementById("b_prec").textContent = (/Precision\s*:\s*([0-9.]+)\s*%/.exec(output)?.[1] + " %") || "--";
+        document.getElementById("b_rec").textContent = (/Recall\s*:\s*([0-9.]+)\s*%/.exec(output)?.[1] + " %") || "--";
+        document.getElementById("b_f1").textContent = (/F1-Score\s*:\s*([0-9.]+)\s*%/.exec(output)?.[1] + " %") || "--";
         document.getElementById("macro_f1").textContent = (/Macro-Averaged F1-Score\s*:\s*([0-9.]+)/.exec(output)?.[1] + " %") || "--";
       }
     }
@@ -162,6 +171,9 @@
       document.getElementById("rec").textContent = "--";
       document.getElementById("f1").textContent = "--";
       document.getElementById("top1").textContent = "--";
+      document.getElementById("b_prec").textContent = "--";
+      document.getElementById("b_rec").textContent = "--";
+      document.getElementById("b_f1").textContent = "--";
       document.getElementById("macro_f1").textContent = "--";
       document.getElementById("progressFill").style.width = "0%";
       document.getElementById("progressContainer").classList.add("hidden");

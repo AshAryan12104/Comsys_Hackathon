@@ -217,14 +217,17 @@ http://localhost:5000
 ## 📊 Sample Metrics
 
 ### ✅ Task A
-- Accuracy: 94.79%
-- Precision: 97.43%
-- Recall: 95.58%
-- F1-Score: 96.50%
+- Accuracy  : 94.7867 %
+- Precision : 97.4277 %
+- Recall    : 95.5836 %
+- F1-Score  : 96.4968 %
 
 ### ✅ Task B
-- Top-1 Accuracy: 100.00%
-- Macro-Averaged F1-Score: 100.00%
+- Top-1 Accuracy: 100.0000 %
+- Precision : 100.0000 %
+- Recall    : 100.0000 %
+- F1-Score  : 100.0000 %
+- Macro-Averaged F1-Score: 100.0000 %
 
 > Training And Validation Results are on training_result.md
 
